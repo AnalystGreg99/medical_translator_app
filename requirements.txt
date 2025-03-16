@@ -5,10 +5,4 @@ audio-recorder-streamlit
 faster-whisper
 python-decouple
 groq
-nvidia-cudnn-cu12
-nvidia-cuda-nvrtc-cu12
-nvidia-cuda-runtime-cu12
-nvidia-cublas-cu12
-torch
-torchaudio
-pyarrow
+numpy
