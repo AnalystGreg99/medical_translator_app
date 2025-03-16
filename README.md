@@ -45,7 +45,7 @@ This project is a **real-time multilingual translation web app** designed for he
 
 ### 1️⃣ **Clone the Repository**  
 ```bash
-git clone https://github.com/yourusername/healthcare-translator.git
+git clone https://github.com/AnalystGreg99/medical_translator_app
 cd healthcare-translator
 ```
 
@@ -87,6 +87,20 @@ git push -u origin main
 - Set **GROQ_API_KEY** as an **environment variable** in Koyeb.  
 - Deploy the service 🚀.  
 
+### 3️⃣ Deploy on Streamlit Sharing
+ - Go to Streamlit Sharing.
+
+ - Click on New App.
+
+ - Connect your GitHub repository.
+
+ - Select the branch (e.g., main) and the main app file (e.g., app.py).
+
+ - Add the GROQ_API_KEY as an environment variable:
+
+ - Go to Advanced Settings.
+
+ - Add the key-value pair: GROQ_API_KEY=your_groq_api_key_here
 ---
 
 ## 📖 Usage Guide  
@@ -133,32 +147,21 @@ or set this environment variable before running the app:
 set KMP_DUPLICATE_LIB_OK=TRUE
 ```
 
-### **❌ App Not Fully Mobile-Friendly?**
-If UI elements are too small on mobile:  
-- Use **Streamlit’s `st.container()`** for better layout.  
-- Add **custom CSS** for improved styling:  
-```python
-st.markdown("""
-    <style>
-        .block-container { padding: 10px !important; }
-    </style>
-""", unsafe_allow_html=True)
-```
 
 ---
 
 ## 🎥 Demo & Submission  
 
-📌 **Live Demo Link**: [Your Koyeb Deployment URL]  
+📌 **Live Demo Link**: [https://medicaltranslatorapp-nweidp5g49urbjguehsjbf.streamlit.app/]  
 📌 **Video Presentation**: [Loom/YouTube Link]  
 
 ---
 
 ## 👨‍💻 Developed By  
 
-👤 **[Your Name]**  
-📧 [Your Email]  
-🔗 [Your LinkedIn / GitHub Profile]  
+👤 **[Ilobinso Chinedum Emanuel]**  
+📧 [chinedumilobinso@gmail.com]  
+🔗 [https://github.com/AnalystGreg99]  
 
 ---
 
