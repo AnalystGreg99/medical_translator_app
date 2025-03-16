@@ -1,0 +1,31 @@
+[APIs]
+Faster-Whisper: Converts audio into text
+Groq API: Translates transcribed text.
+Google Text-To-Speech: Transcription to Audio
+
+[Web Service]
+Streamlit
+
+[Hosting Service]
+Huggingface Space
+Streamlit Cloud
+
+[Version Control]
+Git
+GitHub
+
+[Real-time Transcription/Translation]
+Multi-threading
+
+
+File Structure
+healthcare_translator/
+│
+├── mainapp.py                  # Streamlit app entry point
+├── groq_translation.py         # Translation using Groq API
+├── transcription.py            # Speech-to-text using Faster-Whisper
+├── text_to_speech.py           # Text-to-speech using gTTS
+├── requirements.txt            # Dependencies
+├── .env                        # Environment variables (API keys)
+├── README.md                   # Project documentation
+└── test_healthcare_translator.py # Unit tests

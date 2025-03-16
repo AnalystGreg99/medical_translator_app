@@ -1,0 +1,24 @@
+📖 User Guide
+
+1️⃣ How to Use the App?
+Upload an Audio File – Click on the microphone icon to record your words.
+Select Target Language – Choose the language you want to translate into.
+View Transcription – The spoken words are converted to text and displayed.
+Get Translation – The text is translated in real-time.
+Play Translated Audio – Click the "Play Translation" button to hear the translated text.
+
+2️⃣ Supported Languages
+English → Spanish (es)
+English → French (fr)
+English → German (de)
+English → Chinese (zh)
+
+3️⃣ Error Handling
+🚨 If speech-to-text fails → "Error in transcription" message appears.
+🚨 If translation fails → "Translation error" message appears.
+🚨 If audio playback fails → No sound will be played.
+
+🎯 Final Steps
+✅ Deploy the App on Koyeb
+✅ Test on Different Devices (Mobile & Desktop)
+✅ Ensure Smooth API Integration

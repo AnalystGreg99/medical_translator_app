@@ -1,0 +1,14 @@
+streamlit
+requests
+gtts
+audio-recorder-streamlit
+faster-whisper
+python-decouple
+groq
+nvidia-cudnn-cu12==9.5.0.50
+nvidia-cuda-nvrtc-cu12==12.4.127
+nvidia-cuda-runtime-cu12==12.4.127
+nvidia-cublas-cu12==12.4.5.8
+torch==2.3.1
+torchaudio==2.3.1
+pyarrow

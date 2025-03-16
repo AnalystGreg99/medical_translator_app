@@ -1,0 +1,38 @@
+# Python-specific
+*.pyc
+__pycache__/
+
+# Virtual environment
+.venv/
+
+# Environment variables
+.env
+*.env.*
+
+# Test coverage
+.coverage
+htmlcov/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Build files
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Logs and backups
+*.log
+*.bak
+*.tmp
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+.history/
