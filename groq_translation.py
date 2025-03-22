@@ -5,7 +5,10 @@ from groq import Groq
 from pydantic import BaseModel, Field
 import streamlit as st
 import os
+
+# Fix for libiomp5md.dll conflict
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+
 # Load Groq API key
 try:
     GROQ_API_KEY = config("GROQ_API_KEY")
@@ -31,7 +34,7 @@ def groq_translate(query: str, from_language: str, to_language: str) -> Optional
                 },
                 {"role": "user", "content": query},
             ],
-            model="mixtral-8x7b-32768",
+            model="llama-3.3-70b-versatile",  # Updated model
             temperature=0.2,
             max_tokens=1024,
             stream=False,
