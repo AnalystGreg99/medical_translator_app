@@ -71,4 +71,3 @@ def transcribe_audio(audio_file: str) -> Optional[str]:
     except Exception as e:
         st.error(f"Transcription failed: {e}")
         return None
-
