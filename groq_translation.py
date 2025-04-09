@@ -30,7 +30,8 @@ def groq_translate(query: str, from_language: str, to_language: str) -> Optional
                 {
                     "role": "system",
                     "content": f"You are a medical translator. Translate the following text from {from_language} to {to_language} "
-                               f"with a focus on accurately translating medical terminology. Return a JSON object with a 'translated_text' field."
+                    f"with a focus on accurately translating medical terminology. Ensure the response is returned as a valid JSON object "
+                    f"containing a 'translated_text' field."
                 },
                 {"role": "user", "content": query},
             ],
