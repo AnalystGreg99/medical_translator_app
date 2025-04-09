@@ -26,15 +26,24 @@ import streamlit as st
 from typing import Optional
 import os
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
-# Load Faster-Whisper model
+
+# Set the cache directory (parent folder of models--Systran--faster-whisper-small)
+CACHE_DIR = os.path.expanduser("~/.cache/huggingface/hub")
+
 @st.cache_resource
 def load_model():
     try:
-        return WhisperModel("small", device="cpu", local_files_only=False)  # Use "cuda" for GPU or "cpu" otherwise
+        return WhisperModel(
+            "Systran/faster-whisper-small",  # Model identifier matching your cache
+            device="cpu",
+            download_root=CACHE_DIR,  # Parent directory of all cached models
+            local_files_only=True    # Force use of local cache
+        )
     except Exception as e:
-        st.error(f"Failed to load Faster-Whisper model: {e}")
+        st.error(f"Failed to load model: {e}\n\n"
+                f"Cache location: {CACHE_DIR}\n"
+                f"Try setting local_files_only=False if the model isn't found")
         st.stop()
-
 # Transcription function
 def transcribe_audio(audio_file: str) -> Optional[str]:
     if not audio_file:
