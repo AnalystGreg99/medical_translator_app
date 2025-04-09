@@ -37,7 +37,7 @@ def load_model():
             "Systran/faster-whisper-small",  # Model identifier matching your cache
             device="cpu",
             download_root=CACHE_DIR,  # Parent directory of all cached models
-            local_files_only=True    # Force use of local cache
+            local_files_only=False    # Force use of local cache
         )
     except Exception as e:
         st.error(f"Failed to load model: {e}\n\n"
