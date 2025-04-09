@@ -30,7 +30,7 @@ os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 @st.cache_resource
 def load_model():
     try:
-        return WhisperModel("small", device="cpu")  # Use "cuda" for GPU or "cpu" otherwise
+        return WhisperModel("small", device="cpu", local_files_only=False)  # Use "cuda" for GPU or "cpu" otherwise
     except Exception as e:
         st.error(f"Failed to load Faster-Whisper model: {e}")
         st.stop()
