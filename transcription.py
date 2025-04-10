@@ -34,6 +34,7 @@ def load_model():
             "AnalystGreg99/faster-whisper-small",  # Hugging Face repo ID
             device="cpu",                          # Use "cuda" if you want GPU
             download_root=CACHE_DIR,
+            local_files_only=False
         )
     except Exception as e:
         st.error(f"Failed to load the Whisper model: {e}\nCache location: {CACHE_DIR}\nEnsure the model is accessible.")
