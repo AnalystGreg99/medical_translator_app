@@ -7,7 +7,7 @@ from faster_whisper import WhisperModel
 from huggingface_hub import snapshot_download
 
 # Constants
-MODEL_REPO = "analystgreg99/faster-whisper-small"  # Updated model repository
+MODEL_REPO = "AnalystGreg99/faster-whisper-small"  # Updated model repository
 CACHE_DIR = os.path.expanduser("~/.cache/huggingface/hub")
 
 def set_cuda_paths():
