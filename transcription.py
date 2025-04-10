@@ -4,7 +4,7 @@ import streamlit as st
 import os
 
 # Configuration
-MODEL_REPO = "analystgreg99/faster-whisper-small"  # Hugging Face model repo
+MODEL_REPO = "AnalystGreg99/faster-whisper-small"  # Hugging Face model repo
 CACHE_DIR = os.path.expanduser("~/.cache/huggingface/hub")  # Standard cache location
 
 @st.cache_resource
