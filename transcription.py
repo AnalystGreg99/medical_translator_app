@@ -1,104 +1,83 @@
-import sys
 import os
+import sys
 from pathlib import Path
-import shutil
-from faster_whisper import WhisperModel
-import streamlit as st
 from typing import Optional
+import streamlit as st
+from faster_whisper import WhisperModel
+from huggingface_hub import snapshot_download
 
-# --- CUDA Configuration ---
-def set_cuda_paths():
-    """
-    Configure CUDA paths for GPU support if available.
-    Adjusts environment variables to include NVIDIA library paths.
-    """
-    venv_base = Path(sys.executable).parent.parent
-    nvidia_base_path = venv_base / 'Lib' / 'site-packages' / 'nvidia'
-    paths_to_add = [
-        str(nvidia_base_path / 'cuda_runtime' / 'bin'),
-        str(nvidia_base_path / 'cublas' / 'bin'),
-        str(nvidia_base_path / 'cudnn' / 'bin')
-    ]
-
-    for env_var in ['CUDA_PATH', 'CUDA_PATH_V12_4', 'PATH']:
-        current_value = os.environ.get(env_var, '')
-        new_value = os.pathsep.join(paths_to_add + [current_value] if current_value else paths_to_add)
-        os.environ[env_var] = new_value
-
-set_cuda_paths()  # Execute before loading the model
-
-# --- Cache Directory Configuration ---
+# Constants
+MODEL_REPO = "analystgreg99/faster-whisper-small"  # Updated model repository
 CACHE_DIR = os.path.expanduser("~/.cache/huggingface/hub")
 
-# --- Ensure Model Cache ---
-def ensure_model_cache():
-    """
-    Ensures the model directory is prepared for deployment.
-    If the model files are missing, raises an error.
-    """
-    model_dir = "models/Systran--faster-whisper-small"  # Adjust this path to match your local directory structure
-    cache_target = os.path.join(CACHE_DIR, "models--Systran--faster-whisper-small")
-
-    # Verify the source model directory exists
-    if not os.path.exists(model_dir):
-        raise FileNotFoundError(f"Source model directory not found: {model_dir}")
-
-    # Ensure the target cache directory exists
-    if not os.path.exists(CACHE_DIR):
-        os.makedirs(CACHE_DIR)
-
-    # Copy model files to the cache directory if not already present
-    if not os.path.exists(cache_target):
+def set_cuda_paths():
+    """Configure CUDA paths if GPU is available."""
+    if st.secrets.get("USE_GPU", "false").lower() == "true":
         try:
-            shutil.copytree(model_dir, cache_target)
-            print(f"Model successfully cached at: {cache_target}")
+            venv_base = Path(sys.executable).parent.parent
+            nvidia_base_path = venv_base / 'Lib' / 'site-packages' / 'nvidia'
+            paths_to_add = [
+                str(nvidia_base_path / 'cuda_runtime' / 'bin'),
+                str(nvidia_base_path / 'cublas' / 'bin'),
+                str(nvidia_base_path / 'cudnn' / 'bin')
+            ]
+            
+            for env_var in ['CUDA_PATH', 'CUDA_PATH_V12_4', 'PATH']:
+                current = os.environ.get(env_var, '')
+                os.environ[env_var] = os.pathsep.join(paths_to_add + [current] if current else paths_to_add)
         except Exception as e:
-            raise RuntimeError(f"Failed to copy model files to cache: {e}")
-    else:
-        print(f"Model already cached at: {cache_target}")
+            st.warning(f"CUDA path configuration failed: {e}")
 
-ensure_model_cache()  # Ensure cache is prepared before using the model
+# Initialize CUDA paths early
+set_cuda_paths()
 
-# --- Load Model ---
 @st.cache_resource
 def load_model():
-    """
-    Loads the Faster-Whisper model from the cache directory.
-    Returns:
-        WhisperModel: Loaded model instance.
-    """
+    """Load Whisper model with automatic download from Hugging Face Hub."""
     try:
+        # Ensure model is downloaded
+        model_dir = snapshot_download(
+            repo_id=MODEL_REPO,
+            cache_dir=CACHE_DIR,
+            local_files_only=False,
+            resume_download=True
+        )
+        
+        device = "cuda" if st.secrets.get("USE_GPU", "false").lower() == "true" else "cpu"
+        
         return WhisperModel(
-            "Systran/faster-whisper-small",  # Model identifier matching your cache
-            device="cpu",  # Use "cuda" for GPU acceleration if available
-            download_root=CACHE_DIR,  # Parent directory of all cached models
-            local_files_only=True  # Ensure only local files are used
+            model_size_or_path=model_dir,
+            device=device,
+            compute_type="int8",
+            download_root=CACHE_DIR
         )
     except Exception as e:
-        st.error(f"""
-        Failed to load the Whisper model: {e}
-        Cache location: {CACHE_DIR}
-        Ensure the model files are correctly placed in the cache directory.
-        """)
+        st.error(f"""Model loading failed: {e}
+                 Cache location: {CACHE_DIR}
+                 Please check:
+                 1. Internet connection
+                 2. Model repository access
+                 3. Available disk space""")
         st.stop()
 
-# --- Audio Transcription Function ---
 def transcribe_audio(audio_file: str) -> Optional[str]:
-    """
-    Transcribes an audio file using the loaded Whisper model.
-    Args:
-        audio_file (str): Path to the audio file.
-    Returns:
-        Optional[str]: Transcribed text if successful, else None.
-    """
-    if not audio_file:
-        st.warning("No audio file provided.")
+    """Transcribe audio file using Whisper model."""
+    if not audio_file or not os.path.exists(audio_file):
+        st.warning("Invalid audio file path")
         return None
-
+        
     try:
         model = load_model()
-        segments, _ = model.transcribe(audio_file)
+        segments, _ = model.transcribe(
+            audio_file,
+            beam_size=5,
+            vad_filter=True
+        )
         return " ".join(segment.text for segment in segments)
     except Exception as e:
-        st.error(f"Transcription failed: {e}")
+        st.error(f"""Transcription failed: {e}
+                 Possible issues:
+                 1. Corrupted audio file
+                 2. Unsupported format
+                 3. Insufficient resources""")
         return None
